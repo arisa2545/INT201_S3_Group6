@@ -1,14 +1,17 @@
 import {Cookie} from "./cookie.js";
+
 export let carts = {
     items: [], 
     itemId: [] , 
     totalQty: 0 ,
+    totalPrice: 0 ,
 
     // เป็นการอัพเดตข้อมูลใน carts ลงใน cookie
     save: () => {
-      Cookie.set('cartItems', JSON.stringify(carts.items))
-      Cookie.set('cartHistory', JSON.stringify(carts.itemId))
-      Cookie.set('totalQty', JSON.stringify(carts.totalQty))
+      Cookie.set('cartItems', JSON.stringify(carts.items));
+      Cookie.set('cartHistory', JSON.stringify(carts.itemId));
+      Cookie.set('totalQty', JSON.stringify(carts.totalQty));
+      Cookie.set('totalPrice', JSON.stringify(carts.totalPrice))
     },
 
     clearAll: () => {
@@ -46,9 +49,7 @@ export let carts = {
       
           //ใช้ reduce ให้การคำนวนหาจำนวนเมนูทั้งหมดที่อยู่ใน array items ที่อยู่ใน object carts
           carts.totalQty = carts.items.reduce((sum,item) => {return sum += item.qty}, 0);
-          carts.totalPrice = carts.items.reduce((sum,item) => {return sum += item.price}, 0);
-          console.log(carts.itemId);
-          console.log(carts.items)
+          carts.totalPrice = carts.items.reduce((sum,item) => {return sum += (item.price * item.qty)}, 0);
           console.log(carts)
       
           //ใช้ textContent ในการเเสดง totalQty ใน object carts ลงใน cartAmount (tag span ที่มี id เป็น amount)
@@ -60,8 +61,9 @@ export let carts = {
     // function ที่จะโหลดเมนูในตะกร้าเก่าขึ้นมาใหม่
     loadCarts: () => {
       carts.items = JSON.parse(Cookie.getCookie('cartItems'));
-      carts.itemId = JSON.parse(Cookie.getCookie('cartHistory'))
-      carts.totalQty = Number(Cookie.getCookie('totalQty'))
+      carts.itemId = JSON.parse(Cookie.getCookie('cartHistory'));
+      carts.totalQty = Number(Cookie.getCookie('totalQty'));
+      carts.totalPrice = Number(Cookie.getCookie('totalPrice'));
       console.log(carts);
 
       const cartAmount = document.querySelector('#amount');
@@ -118,6 +120,9 @@ export let carts = {
         }
         
       }
+
+      const totalPriceEle = document.querySelector('#totalPrice');
+      totalPriceEle.textContent = `total price : ${carts.totalPrice}`;
 
       // ใส่ event ให้กับปุ่มปิดที่อยู่ใน model เมื่อคลิกที่ปุ่มจะปิดเเท็บของ modal
       const closeBtn = document.getElementById("close")
