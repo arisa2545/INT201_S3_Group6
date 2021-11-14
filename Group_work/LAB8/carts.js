@@ -121,6 +121,7 @@ export let carts = {
         
       }
 
+      // เเสดงราคารวมออกมา
       const totalPriceEle = document.querySelector('#totalPrice');
       totalPriceEle.textContent = `total price : ${carts.totalPrice}`;
 
