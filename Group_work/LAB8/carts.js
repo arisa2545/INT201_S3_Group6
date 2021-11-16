@@ -20,6 +20,7 @@ export let carts = {
       carts.items = []; 
       carts.itemId = []; 
       carts.totalQty = 0;
+      carts.totalPrice = 0;
       
       // อัพเดตตรงที่เเสดง total quantity
       const cartAmount = document.querySelector('#amount');
