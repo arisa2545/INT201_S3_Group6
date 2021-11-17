@@ -14,7 +14,7 @@ export function checkToggle() {
   
         //อันนี้จะ add event ให้กับปุ่ม search 
         const searchBtn = document.querySelector('#searchBtn');
-        console.log(searchBtn)
+        console.log(searchBtn);
         
         // ทำการ add event ให้กับปุ่ม search เมื่อ click เเล้วจะนำ value ที่พิมไว้ในช่อง search เข้ามาไปหาว่าตรงกับตัวไหนใน kfcMenu บ้าง เเล้วก็เมนูเหล่านั้นเเสดงออกมา
         searchBtn.addEventListener('click', () => {
@@ -22,11 +22,11 @@ export function checkToggle() {
             // ทำการ querySelector ช่อง search เเละ get value ออกมา จากนั้นนำไปเก็บไว้ในตัวแปร value
             let value = document.querySelector('#inputValue').value;
             //console.log(document.querySelector('#inputValue'))
-            console.log(value)
+            console.log(value);
   
             //นำ value มาสร้างเป็น pattern ด้วย regular expression object ที่กำหนด attribute เป็น i (ignore case) เพื่อใช้ในการค้นหาชื่อสินค้าที่มีประกอบด้วย pattern นั้นๆอยู่
             let pattern = new RegExp(value, 'i')
-            console.log(pattern)
+            console.log(pattern);
   
             //ใช้ filter ในการวนลูปเข้าไปเช็น condition ใน kfcMenu โดยจะ filter เฉพาะเมนูที่มีชื่อประกอบด้วย pattern ที่กำหนดไว้ เเละเข้าไป assign ให้กับ searchMenu
             const searchMenu = kfcMenu.filter((menu) => {return menu.menuName.match(pattern) != null});

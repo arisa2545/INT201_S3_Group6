@@ -1,7 +1,13 @@
 import {Cookie} from "./cookie.js";
+// สร้าง object carts โดย items จะเก็บเป็น array ของ menu ที่จะเพิ่มเข้ามาใน carts
+//                       itemId จะเก็บ id ของ menu ที่เคยเพิ่มเข้ามาแล้ว
+//                       totalQty จะเก็บจำนวน menu ทั้งหมดที่เพิ่มเข้ามา
+//                       totalPrice จะเก็บราคารวมของ menu ทั้งหมดที่เพิ่มเข้ามา
 
+// การเก็บ itemId เเยกออกมาจาก items จะทำให้เวลา addItem สามารถเช็คเงื่อนไขที่ว่าเคยมี menu นี้อยู่ใน items รึป่าวได้ง่ายมากขึ้น 
+// ใช้ method includes ได้เลยไม่จำเป็นจะต้องไปวนลูปเช็คอีกรอบ
 export let carts = {
-    items: [], 
+    items: [] , 
     itemId: [] , 
     totalQty: 0 ,
     totalPrice: 0 ,
@@ -12,6 +18,7 @@ export let carts = {
       Cookie.set('cartHistory', JSON.stringify(carts.itemId));
       Cookie.set('totalQty', JSON.stringify(carts.totalQty));
       Cookie.set('totalPrice', JSON.stringify(carts.totalPrice))
+      // JSON.stringify ใช้ในการแปลง object เป็น string
     },
 
     clearAll: () => {
@@ -34,7 +41,7 @@ export let carts = {
     addItem: (newItem) => {
 
         // ถ้า array items ที่อยู่ใน carts ไม่มีของอยู่ในตะกร้า หรือสินค้าที่จะเพิ่มเข้าไปนั้นไม่เคยมีการเพิ่มลงตะกร้ามาก่อน
-        //ให้ทำการเพิ่ม object newItem เข้าไปใน array items เเละเพิ่ม id ของ newItem เข้าไปใน array itemId เพื่อเก้บประวัติไว้ว่าเคยมีเมนูอันนี้เพิ่มเข้ามาเเล้ว
+        //ให้ทำการเพิ่ม object newItem เข้าไปใน array items เเละเพิ่ม id ของ newItem เข้าไปใน array itemId เพื่อเก็บประวัติไว้ว่าเคยมีเมนูอันนี้เพิ่มเข้ามาเเล้ว
         if(carts.items.length == 0 || carts.itemId.includes(newItem.id) == false){
             carts.items.push(newItem)
             carts.itemId.push(newItem.id)
@@ -50,6 +57,7 @@ export let carts = {
       
           //ใช้ reduce ให้การคำนวนหาจำนวนเมนูทั้งหมดที่อยู่ใน array items ที่อยู่ใน object carts
           carts.totalQty = carts.items.reduce((sum,item) => {return sum += item.qty}, 0);
+          //ใช้ reduce ให้การคำนวนหาราคารวมทั้งหมดของเมนูที่อยู่ใน carts
           carts.totalPrice = carts.items.reduce((sum,item) => {return sum += (item.price * item.qty)}, 0);
           console.log(carts)
       
@@ -60,6 +68,7 @@ export let carts = {
     },
 
     // function ที่จะโหลดเมนูในตะกร้าเก่าขึ้นมาใหม่
+    // JSON.parse ใช้ในการเเปลง string เป็น object 
     loadCarts: () => {
       carts.items = JSON.parse(Cookie.getCookie('cartItems'));
       carts.itemId = JSON.parse(Cookie.getCookie('cartHistory'));
@@ -67,6 +76,7 @@ export let carts = {
       carts.totalPrice = Number(Cookie.getCookie('totalPrice'));
       console.log(carts);
 
+      // นำ totalQty มาเเสดงใน tag span เพื่อให้ข้อมูลจำนวนเมนูใน carts เป็นปัจจุบัน
       const cartAmount = document.querySelector('#amount');
       cartAmount.textContent = carts.totalQty
     },
@@ -126,7 +136,7 @@ export let carts = {
       const totalPriceEle = document.querySelector('#totalPrice');
       totalPriceEle.textContent = `total price : ${carts.totalPrice}`;
 
-      // ใส่ event ให้กับปุ่มปิดที่อยู่ใน model เมื่อคลิกที่ปุ่มจะปิดเเท็บของ modal
+      // ใส่ event ให้กับปุ่มปิดที่อยู่ใน modal เมื่อคลิกที่ปุ่มจะปิดเเท็บของ modal
       const closeBtn = document.getElementById("close")
       closeBtn.addEventListener('click', () => {modal.style.display = "none";})
 
