@@ -1,9 +1,9 @@
-import {carts} from "./carts.js";
+import {addItem, save} from "./carts.js";
 
 export function showMenus(arr) {
     
     let allMenu = document.querySelector('#allMenu');
-    
+
     allMenu.textContent = '';
     
     
@@ -43,8 +43,8 @@ export function showMenus(arr) {
       buttonAddEle.addEventListener('click', () => {
         alert(`Add Menu ID '${menu.menuId}' to Your Cart`)
         let newItem = {id: menu.menuId, name: menu.menuName, price: menu.price, qty: 1};
-        carts.addItem(newItem);
-        carts.save();
+        addItem(newItem);
+        save();
       })
 
     } else {
